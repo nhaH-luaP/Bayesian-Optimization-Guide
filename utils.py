@@ -54,27 +54,29 @@ class PlotBO():
         axis[2].plot(param_space.reshape(-1, 1), acqf_space, c='black')
         axis[2].set_ylabel("acq-func")
         axis[2].set_xlabel("x")
+        
 
         # Adding a vline for the last chosen sample
-        y_dom = torch.max(torch.abs(torch.stack((1.96*std.flatten(), acqf_space.flatten(), targets.flatten())))) + 0.1
         for ax in axis:
-            ax.vlines(x_train[-1], -y_dom, y_dom)
+            ax.axvline(x_train[-1].item())
             ax.set_xlim((-domain, domain))
-            ax.set_ylim((-y_dom, y_dom))
 
+        plt.savefig('images/1d/1d_bo_'+str(iteration)+'.png', bbox_inches='tight')
         plt.show()
 
+        
 
-    def plot_bo_2d(self, domain_2d, xx, yy, param_space_2d, targets_2d, acqf, model, x_train, iteration, beta):
+
+    def plot_bo_2d(self, xx, yy, param_space_2d, targets_2d, acqf, model, x_train, iteration, beta):
         fig, axis = plt.subplots(nrows=2, ncols=2, sharey=True, figsize=(7,5), dpi=80, facecolor='silver', constrained_layout=True)
         fig.suptitle('Epoch '+str(iteration) + ' (Beta='+str(beta)+')', fontsize=12)
 
         # Calculate Values of the param space for objective function, acquisition function and variance of gaussian process thats being used as a surrogate
-        target_space = F.normalize(targets_2d.view(xx.shape))
-        ucb_space = F.normalize(acqf(param_space_2d.reshape(-1, 1, 2)).view(xx.shape).detach())
+        target_space = targets_2d.view(xx.shape)
+        ucb_space = acqf(param_space_2d.reshape(-1, 1, 2)).view(xx.shape).detach()
         model_output = model(param_space_2d)
-        var_space = F.normalize(model_output.stddev.detach().view(xx.shape)**2)
-        mean_space = F.normalize(model_output.mean.detach().view(xx.shape))
+        var_space = model_output.stddev.detach().view(xx.shape)**2
+        mean_space = model_output.mean.detach().view(xx.shape)
 
         # Here the objective function will be plottet with sampled points
         con = axis[0][0].contourf(xx, yy, target_space, alpha=.8, zorder=-1, cmap='plasma')
@@ -98,9 +100,10 @@ class PlotBO():
 
         for i in range(2):
             for j in range(2):
-                axis[i][j].vlines(x_train[-1][0], ymin=-domain_2d, ymax=domain_2d)
-                axis[i][j].hlines(x_train[-1][1], xmin=-domain_2d, xmax=domain_2d)
+                axis[i][j].axvline(x_train[-1][0].item())
+                axis[i][j].axhline(x_train[-1][1].item())
                 axis[i][j].scatter(x_train[:,0], x_train[:,1], c='black', s=5)
 
         # Additional cross for reference of which point has been sampled
+        plt.savefig('images/2d/2d_bo_'+str(iteration)+'.png', bbox_inches='tight')
         plt.show()

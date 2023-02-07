@@ -10,5 +10,13 @@ conda env create -f environment.yml
 ## Experiments
 All major experiments are stored in bayesian_optimization.ipynb!
 
+## Gifs
+
+### 1-D Example
+![](./gifs/1d_bayes_opt_demo.gif)
+
+### 2-D Example
+![](./gifs/2d_bayes_opt_demo.gif)
+
 ## Questions
 Just write an Issue for this repository, i will answer as soon as possible.
