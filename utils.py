@@ -61,7 +61,7 @@ class PlotBO():
             ax.axvline(x_train[-1].item())
             ax.set_xlim((-domain, domain))
 
-        plt.savefig('images/1d/1d_bo_'+str(iteration)+'.png', bbox_inches='tight')
+        #plt.savefig('images/1d/1d_bo_'+str(iteration)+'.png', bbox_inches='tight')
         plt.show()
 
         
@@ -105,5 +105,5 @@ class PlotBO():
                 axis[i][j].scatter(x_train[:,0], x_train[:,1], c='black', s=5)
 
         # Additional cross for reference of which point has been sampled
-        plt.savefig('images/2d/2d_bo_'+str(iteration)+'.png', bbox_inches='tight')
+        #plt.savefig('images/2d/2d_bo_'+str(iteration)+'.png', bbox_inches='tight')
         plt.show()
