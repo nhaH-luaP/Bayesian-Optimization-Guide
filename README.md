@@ -18,5 +18,8 @@ All major experiments are stored in bayesian_optimization.ipynb!
 ### 2-D Example
 ![](./gifs/2d_bayes_opt_demo.gif)
 
+### Comparison
+![](./images/comparison.png)
+
 ## Questions
 Just write an Issue for this repository, i will answer as soon as possible.
